@@ -1,0 +1,40 @@
+---
+Title: "Tarea_Diplomado R"
+Autor: "Yessica Ortega Asencios"
+date: '2022-05-10'
+output: html_document
+---
+# Titulo: Título del trabajo:
+Evaluación del efecto del aceite de orégano sobre los índices de productividad en trucha arcoíris (*Oncorhynchus mykiss*) en Perú.
+
+# Autor:
+Yessica Ortega Asencios
+
+# Problema a revisar: 
+El objetivo del estudio fue evaluar el efecto de un producto comercial a base de aceite de orégano sobre los parámetros productivos en trucha arco iris. Se utilizaron 1500 truchas provenientes de la Universidad Nacional del Altiplano de Puno - Perú. Los peces fueron distribuidos en dos grupos (250 cada uno), con inclusión del producto en la dieta a dos concentraciones (T1 = 0.3 g/kg y T2 = 0.5 g/kg) y un grupo control (G.C = 0). Se utilizaron tres repeticiones por cada grupo.
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

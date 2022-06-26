@@ -1,55 +1,21 @@
----
-Titulo: "Tarea Diplomado en R"
-Autor: "Yessica Ortega Asencios"
-Fecha: "24 mayo 2022"
-output: html_document
----
-
-## Titulo: 
-Evaluación del efecto del aceite de orégano sobre los índices de productividad en trucha arcoíris (*Oncorhynchus mykiss*) en Perú.
-
-## Autor: 
-Yessica Ortega Asencios
-
-## Problema a revisar: 
-El objetivo del estudio fue evaluar el efecto de un producto comercial a base de aceite de orégano sobre los parámetros productivos en trucha arco iris. Se utilizaron 1500 truchas provenientes de la Universidad Nacional del Altiplano de Puno - Perú. Los peces fueron distribuidos en dos grupos (250 cada uno), con inclusión del producto en la dieta a dos concentraciones (T1 = 0.3 g/kg y T2 = 0.5 g/kg) y un grupo control (G.C = 0). Se utilizaron tres repeticiones por cada grupo.
-
-## Variables:
-### Independiente:
-Aceite de orégano
-
-### Dependiente: 
-Peso, Talla 
-
-## Análisis exploratorio
-### Instalar paquetes
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(readxl)
-library(ggplot2)
-library(ggpubr)
-library(dplyr)
-library(psych)
-```
-
-## Cargar archivos
-```{r}
 Datos_biometría<-read_excel("Datos biometría.xlsx", sheet=1)
+View(Datos_biometría)
 head(Datos_biometría)
 str(Datos_biometría)
 tail(Datos_biometría)
-summary(Datos_biometría)
 
 Datos_biometría$Pez<-as.factor(Datos_biometría$Pez)
 Datos_biometría$Dosis<-as.factor(Datos_biometría$Dosis)
 Datos_biometría$N_Biom<-as.factor(Datos_biometría$N_Biom)
 Datos_biometría$N_Estanque<-as.factor(Datos_biometría$N_Estanque)
-summary(Datos_biometría)
-```
 
-## Filtrar y explorar datos
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
+summary(Datos_biometría)
+
+
+
+# Filtrar datos
+install(dplyr)
+library(dplyr)
 Biom_1<-Datos_biometría%>%filter(N_Biom=="1")%>%select(Dosis,N_Estanque,Peso,Talla)
 Biom_2<-Datos_biometría%>%filter(N_Biom=="2")%>%select(Dosis,N_Estanque,Peso,Talla)
 Biom_3<-Datos_biometría%>%filter(N_Biom=="3")%>%select(Dosis,N_Estanque,Peso,Talla)
@@ -63,6 +29,19 @@ table(Biom_1$Peso)
 table(Biom_8$Dosis)
 table(Biom_6$N_Estanque)
 table(Biom_7$Talla)
+
+# Métricas de set de datos
+
+# mean(), sd(), range() y quantile().
+
+# Densidad
+plot(density(Biom_6$Peso))
+plot(density(Biom_7$Talla))
+plot(density(Data_8$Promedio_Peso))
+plot(density(Data_8$Promedio_Talla))
+
+
+
 
 Data_1<-Biom_1%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
             Promedio_Peso = mean(Peso, na.rm=T), 
@@ -97,22 +76,48 @@ Data_8<-Biom_8%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(),
 
 table(Data_1$Promedio_Peso)
 table(Data_8$Promedio_Peso)
-```
 
-## Gráficos: Densidad y distribución acumulada empírica
-```{r biometría, echo=TRUE}
-plot(density(Biom_6$Peso))
-plot(density(Biom_7$Talla))
-plot(density(Data_8$Promedio_Peso))
-plot(density(Data_8$Promedio_Talla))
-
+# Distribución acumulada empírica
 plot(ecdf(Data_3$Promedio_Talla), main="Distribución acumulada empírica", xlab="Talla Promedio (cm)")
 plot(ecdf(Data_5$Promedio_Peso), main="Distribución acumulada empírica", xlab="Peso Promedio (g)")
-```
 
-## Explorando los datos
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
+
+
+# Gráfica de dispersión ggplot2
+
+Graf_1<-Data_1%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_2<-Data_2%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_3<-Data_3%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_4<-Data_4%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_5<-Data_5%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_6<-Data_6%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_7<-Data_7%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+Graf_8<-Data_8%>%ggplot(aes(x=Promedio_Peso, y=Dosis,color=N_Estanque))+
+  geom_point(size=2)+labs(x= "Promedio_Peso(g)", y= "Dosis")+
+  theme_bw()
+
+# Histograma
 hist(Biom_8$Peso, col="#FA8072", main="Histograma de Peso_8", las=1, xlab="Peso (g)", 
      ylab="Frecuencia")
 
@@ -135,19 +140,19 @@ ggplot(Data_8, aes(Promedio_Talla))+
   labs(title="Histograma", x="Promedio de Talla", 
        y="Frecuencia")
 
-
+# Diagrama de cajas
 boxplot(formula = Peso ~ Dosis,
         data =  Biom_1, col=c("#D2691E","#7FFFD4","#FFD700"))
 
 
 boxplot(formula = Talla ~ Dosis, 
-        data=Biom_1, col=c("#D2691E","#7FFFD4","#FFD700"))
+        data=Biom_1)
 
 boxplot(formula = Peso ~ Dosis, 
-        data=Biom_8, col=c("#636363","#FF3030","#00FFFF"))
+        data=Biom_8)
 
 boxplot(formula = Talla ~ Dosis, 
-        data=Biom_8, col=c("#FFA07A","#242424","#C0FF3E"))
+        data=Biom_8)
 
 ggplot(Biom_8, aes(x=Dosis, y=Peso, fill=N_Estanque)) +
   geom_boxplot()+
@@ -157,27 +162,27 @@ ggplot(Biom_8, aes(x=Dosis, y=Talla, fill=N_Estanque)) +
   geom_boxplot()+
   labs(y="Talla")
 
+
+
+
+library(ggpubr)
 ggboxplot(Biom_7, x= "Dosis", y
           ="Talla",col= 1, ylab="Talla (cm)",
           xlab="Dosis", notch = F, add.params = list(color = c("cadetblue")), add="jitter")
-```
 
-## Gráfica de dispersión, interacción y correlación
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
-plot(x = Data_1$Promedio_Peso, y = Data_1$Promedio_Talla, col = Data_1$Dosis, 
-     main = "Peso - Talla", xlab = "Peso", ylab = "Talla")
-legend(x = "topleft", legend = c("GC", "T1", "T2"), 
-       fill = c("black", "red", "green"), title = "Promedio Peso vs Promedio Talla")
 
+# Gráfico de dispersión
+
+# Gráfico de interacción
+interaction.plot(Dosis,N_Estanque, Promedio_Peso, fun=mean, type = "b",
+                legend=TRUE)
+
+library(psych)
+# Gráfica de correlación de variables continuas
 pairs.panels(Data_8[,4:5], method = "pearson", hist.col = "#FFA500",  density = TRUE, font=2)
-```
 
-## Generando tablas
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
+# Generando tablas
+install.packages(DT)
 library(DT)
 datatable(Data_8, caption = "Peso y Talla promedio en función de la Dosis.") 
-```
-
 

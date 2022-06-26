@@ -3,7 +3,7 @@
 ## Título del trabajo:
 Evaluación del efecto del aceite de orégano sobre los índices de productividad en trucha arcoíris (Oncorhynchus mykiss) en Perú.
 
-## Autor:
+## Autor: 
 Yessica Ortega Asencios
 
 ## Problema a revisar: 
@@ -11,4 +11,9 @@ El objetivo del estudio fue evaluar el efecto de un producto comercial a base de
 
 ## Variables: 
 
+### Independiente: 
+Aceite de orégano 
+
+### - Dependiente:
+Peso, Talla y Mortalidad
 

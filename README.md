@@ -17,3 +17,12 @@ Aceite de orégano
 ### - Dependiente:
 Peso, Talla y Mortalidad
 
+## Métodos estadísticos
+Mortalidad: Análisis de supervivencia
+
+## Hipótesis
+"H0 : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente"
+"H1 : La sobrevivencia en trucha arcoíris con o sin tratamiento es diferente"
+
+## Conclusión
+La sobreviencia en trucha arcoíris con la inclusión de aceite de orégano (T1 y T2) es diferente al grupo control

@@ -18,8 +18,9 @@ El objetivo del estudio fue evaluar el efecto de un producto comercial a base de
 ### Independiente:
 Aceite de orégano
 
-### Dependiente: 
-Peso, Talla 
+### Dependientes: 
+Peso, Talla y Mortalidad
+
 
 ## Análisis exploratorio
 ### Instalar paquetes

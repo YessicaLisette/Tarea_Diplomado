@@ -1,7 +1,7 @@
 # Tarea_Diplomado
 
 ## Título del trabajo:
-Evaluación del efecto del aceite de orégano sobre los índices de productividad en trucha arcoíris (Oncorhynchus mykiss) en Perú.
+Evaluación del efecto del aceite de orégano sobre los índices de productividad en trucha arcoíris ("Oncorhynchus mykiss") en Perú.
 
 ## Autor: 
 Yessica Ortega Asencios

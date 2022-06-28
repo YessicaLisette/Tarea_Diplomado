@@ -74,8 +74,7 @@ Data_8<-Biom_8%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(),
             Promedio_Peso = mean(Peso, na.rm=T), 
             Promedio_Talla =mean(Talla, na.rm=T))
 
-table(Data_1$Promedio_Peso)
-table(Data_8$Promedio_Peso)
+table(Biom_8$Dosis,Biom_6$N_Estanque)
 
 # Distribución acumulada empírica
 plot(ecdf(Data_3$Promedio_Talla), main="Distribución acumulada empírica", xlab="Talla Promedio (cm)")

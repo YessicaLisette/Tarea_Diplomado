@@ -118,7 +118,7 @@ DunnTest(Biom_8$Peso~as.factor(Biom_8$Dosis)) # Todos contra todos
 # Conclus: El peso con la inclusión de la dosis de 0.3 g/Kg es > que resto
 # en trucha arcoíris. El peso con dosis de 0.5 y control es igual
 
-# Comparaciones Multiples No-parametricas
+# Comparaciones Multiples No-paramétricas
 install.packages("nparcomp") # Intalar paquete DescTools
 library("nparcomp")
 gao(Peso~Dosis, data=Biom_8, alpha = 0.05, control = "0", silent = T) # comparado control

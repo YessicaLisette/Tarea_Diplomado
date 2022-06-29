@@ -11,6 +11,9 @@ biometría$Dosis<-as.factor(biometría$Dosis)
 biometría$N_Biom<-as.factor(biometría$N_Biom)
 biometría$N_Estanque<-as.factor(biometría$N_Estanque)
 
+# Tablas de frecuencia
+table(Biom_1$Dosis, Biom_1$N_Estanque)
+
 str(biometría)
 
 # Filtrar datos
@@ -123,5 +126,4 @@ install.packages("nparcomp") # Intalar paquete DescTools
 library("nparcomp")
 gao(Peso~Dosis, data=Biom_8, alpha = 0.05, control = "0", silent = T) # comparado control
 
-# Kruskall Wallis y comparaciones múltiples
-kruskal.test(Biom_8$Peso, Biom_8$Dosis, p.adj="holm", console=T)
+

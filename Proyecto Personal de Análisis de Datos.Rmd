@@ -21,164 +21,223 @@ Aceite de orégano
 ### Dependientes: 
 Peso, Talla y Mortalidad
 
-
-## Análisis exploratorio
-### Instalar paquetes
+# ANÁLISIS EXPLORATORIO
+## Instalar paquetes y cargar librerías
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(ggplot2)
 library(ggpubr)
 library(dplyr)
+library(tidyr)
 library(psych)
 ```
 
-## Cargar archivos
+## Cargar y leer archivos
 ```{r}
-Datos_biometría<-read_excel("Datos biometría.xlsx", sheet=1)
-head(Datos_biometría)
-str(Datos_biometría)
-tail(Datos_biometría)
-summary(Datos_biometría)
+biometría<-read_excel("Datos_biometría.xlsx", sheet=1)
+mortalidad <- read_excel("data_mortalidad.xls", sheet = 2)
 
-Datos_biometría$Pez<-as.factor(Datos_biometría$Pez)
-Datos_biometría$Dosis<-as.factor(Datos_biometría$Dosis)
-Datos_biometría$N_Biom<-as.factor(Datos_biometría$N_Biom)
-Datos_biometría$N_Estanque<-as.factor(Datos_biometría$N_Estanque)
-summary(Datos_biometría)
+# Explorar data: biometría
+head(biometría)
+str(biometría)
+tail(biometría)
+summary(biometría)
+
+# Convertir variables "Pez", "Dosis", "N_Biom" y "N_Estanque" a factores
+biometría$Pez<-as.factor(biometría$Pez)
+biometría$Dosis<-as.factor(biometría$Dosis)
+biometría$N_Biom<-as.factor(biometría$N_Biom)
+biometría$N_Estanque<-as.factor(biometría$N_Estanque)
+summary(biometría)
+str(biometría)
+
 ```
 
 ## Filtrar y explorar datos
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
-Biom_1<-Datos_biometría%>%filter(N_Biom=="1")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_2<-Datos_biometría%>%filter(N_Biom=="2")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_3<-Datos_biometría%>%filter(N_Biom=="3")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_4<-Datos_biometría%>%filter(N_Biom=="4")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_5<-Datos_biometría%>%filter(N_Biom=="5")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_6<-Datos_biometría%>%filter(N_Biom=="6")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_7<-Datos_biometría%>%filter(N_Biom=="7")%>%select(Dosis,N_Estanque,Peso,Talla)
-Biom_8<-Datos_biometría%>%filter(N_Biom=="8")%>%select(Dosis,N_Estanque,Peso,Talla)
+Biom_1<-biometría%>%filter(N_Biom=="1")
+Biom_4<-biometría%>%filter(N_Biom=="4")
+Biom_8<-biometría%>%filter(N_Biom=="8")
 
-table(Biom_1$Peso)
-table(Biom_8$Dosis)
-table(Biom_6$N_Estanque)
-table(Biom_7$Talla)
 
-Data_1<-Biom_1%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-            Promedio_Peso = mean(Peso, na.rm=T), 
-            Promedio_Talla =mean(Talla, na.rm=T))
+# Evaluar diseño balanceado mediante tablas de frecuencia
+table(biometría$Dosis, biometría$N_Estanque)
+table(biometría$Dosis, biometría$N_Biom)
 
-Data_2<-Biom_2%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(),
-            Promedio_Peso = mean(Peso, na.rm=T), 
-            Promedio_Talla =mean(Talla, na.rm=T))
+# Establecer relación entre variables cuantitativas y factores 
 
-Data_3<-Biom_3%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-            Promedio_Peso = mean(Peso, na.rm=T), 
-            Promedio_Talla =mean(Talla, na.rm=T))
-Data_4<-Biom_4%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-           Promedio_Peso = mean(Peso, na.rm=T), 
-           Promedio_Talla =mean(Talla, na.rm=T))
-
-Data_5<-Biom_5%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-           Promedio_Peso = mean(Peso, na.rm=T), 
-           Promedio_Talla =mean(Talla, na.rm=T))
-
-Data_6<-Biom_6%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-           Promedio_Peso = mean(Peso, na.rm=T), 
-           Promedio_Talla =mean(Talla, na.rm=T))
-
-Data_7<-Biom_7%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-           Promedio_Peso = mean(Peso, na.rm=T), 
-           Promedio_Talla =mean(Talla, na.rm=T))
-
-Data_8<-Biom_8%>%group_by(Dosis, N_Estanque)%>%summarize(n = n(), 
-            Promedio_Peso = mean(Peso, na.rm=T), 
-            Promedio_Talla =mean(Talla, na.rm=T))
-
-table(Data_1$Promedio_Peso)
-table(Data_8$Promedio_Peso)
-```
-
-## Gráficos: Densidad y distribución acumulada empírica
-```{r biometría, echo=TRUE}
-plot(density(Biom_6$Peso))
-plot(density(Biom_7$Talla))
-plot(density(Data_8$Promedio_Peso))
-plot(density(Data_8$Promedio_Talla))
-
-plot(ecdf(Data_3$Promedio_Talla), main="Distribución acumulada empírica", xlab="Talla Promedio (cm)")
-plot(ecdf(Data_5$Promedio_Peso), main="Distribución acumulada empírica", xlab="Peso Promedio (g)")
-```
-
-## Explorando los datos
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
-hist(Biom_8$Peso, col="#FA8072", main="Histograma de Peso_8", las=1, xlab="Peso (g)", 
+hist(Biom_4$Peso, col="#FA8072", main="Histograma de Peso_4", las=1, xlab="Peso (g)", 
      ylab="Frecuencia")
 
-hist(Biom_7$Talla, col="#4EEE94", main="Histograma de Talla_7", las=1, xlab="Talla (cm)", 
+hist(Biom_8$Talla, col="#4EEE94", main="Histograma de Talla_8", las=1, xlab="Talla (cm)", 
      ylab="Frecuencia")
 
-hist(Data_8$Promedio_Peso, col="#FFD700", main="Histograma de Promedio Peso_8", las=1,
-     xlab="Promedio Peso (g)", ylab="Frecuencia")
+# Barplot
+barplot(tapply(Biom_8$Peso, Biom_8$Dosis, mean), names=c("0", "0.3", "0.5"),
+space=1.5, col="cadetblue", xlab="Dosis", ylab="Peso[g]", ylim=c(0,), main = "Comparacion Promedios”, las =1)
 
-hist(Data_8$Promedio_Talla, col="#EE3B3B", main="Histograma de Promedio Talla_8", las=1,
-     xlab="Promedio Talla (cm)", ylab="Frecuencia")
+# Boxplot
 
-ggplot(Data_8, aes(Promedio_Peso))+
+ggplot(Biom_8, aes(Peso))+
   geom_histogram(bins=8, color="#858585", fill="#ADFF2F")+
-  labs(title="Histograma", x="Promedio de Peso", 
-       y="Frecuencia")
-
-ggplot(Data_8, aes(Promedio_Talla))+
-  geom_histogram(bins=8, color="#00008B", fill="#1874CD")+
-  labs(title="Histograma", x="Promedio de Talla", 
+  labs(title="Histograma", x="Peso", 
        y="Frecuencia")
 
 
-boxplot(formula = Peso ~ Dosis,
-        data =  Biom_1, col=c("#D2691E","#7FFFD4","#FFD700"))
-
-
-boxplot(formula = Talla ~ Dosis, 
-        data=Biom_1, col=c("#D2691E","#7FFFD4","#FFD700"))
-
-boxplot(formula = Peso ~ Dosis, 
-        data=Biom_8, col=c("#636363","#FF3030","#00FFFF"))
-
-boxplot(formula = Talla ~ Dosis, 
-        data=Biom_8, col=c("#FFA07A","#242424","#C0FF3E"))
-
-ggplot(Biom_8, aes(x=Dosis, y=Peso, fill=N_Estanque)) +
-  geom_boxplot()+
-  labs(y="Peso")
-
-ggplot(Biom_8, aes(x=Dosis, y=Talla, fill=N_Estanque)) +
-  geom_boxplot()+
-  labs(y="Talla")
-
-ggboxplot(Biom_7, x= "Dosis", y
+ggboxplot(Biom_8, x= "Dosis", y
           ="Talla",col= 1, ylab="Talla (cm)",
-          xlab="Dosis", notch = F, add.params = list(color = c("cadetblue")), add="jitter")
-```
+          xlab="Dosis", notch = F, add.params = list(color = c("cadetblue"))
+          
 
-## Gráfica de dispersión, interacción y correlación
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
-plot(x = Data_1$Promedio_Peso, y = Data_1$Promedio_Talla, col = Data_1$Dosis, 
+
+# Gráficas de dispersión, interacción y correlación
+plot(x = Biom_8$Peso, y = Biom_8$Talla, col = Biom_8$Dosis, 
      main = "Peso - Talla", xlab = "Peso", ylab = "Talla")
 legend(x = "topleft", legend = c("GC", "T1", "T2"), 
-       fill = c("black", "red", "green"), title = "Promedio Peso vs Promedio Talla")
+       fill = c("black", "red", "green"), title = "Peso vs Talla")
 
-pairs.panels(Data_8[,4:5], method = "pearson", hist.col = "#FFA500",  density = TRUE, font=2)
+pairs.panels(Biom_8[,4:5], method = "pearson", hist.col = "#FFA500",  density = TRUE, font=2)
+
+# Gráficos: Densidad y distribución acumulada empírica
+plot(density(Biom_8$Peso))
+plot(density(Biom_8$Talla))
+
+plot(ecdf(Biom_8$Talla), main="Distribución acumulada empírica", xlab="Talla (cm)")
+plot(ecdf(Biom_8$Peso), main="Distribución acumulada empírica", xlab="Peso (g)")
+
 ```
+
 
 ## Generando tablas
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 library(DT)
-datatable(Data_8, caption = "Peso y Talla promedio en función de la Dosis.") 
+datatable(Biom_8, caption = "Peso y Talla en función de la Dosis.") 
 ```
 
+# ANÁLISIS ESTATÍSTICO
+```{r}
+# Instalar paquetes y cargar librerías
+install.packages("DescTools")
+install.packages("nparcomp") 
+library(car)
+library(lmtest)
+library(knitr)
+library(DescTools)
+library("nparcomp")
 
+# Análisis preliminar
+tapply(Biom_8$Talla,Biom_8$Dosis,mean)
+tapply(Biom_8$Peso,Biom_8$Dosis,mean)
+
+# Gráfico
+boxplot(Biom_8$Peso~Biom_8$Dosis, names=c("0.5", "0.3", "0"), cex.main=1,
+        ylab="Peso", col=c("deepskyblue1","deepskyblue3","deepskyblue4"), main="Peso segun dosis de inclusión",
+        las=1, xlab="Dosis", ylimit=c(0,50))
+
+# Modelo lineal
+lm.aov <- lm(Biom_8$Peso ~ Biom_8$Dosis, data = Biom_8)
+aov(lm.aov)
+
+# Evaluación de supuestos
+# a. Indpendencia
+plot(lm.aov$residuals, pch=20, col = "blue")
+
+dwtest(Peso ~ Dosis, data = Biom_8,
+       alternative = c("two.sided"), 
+       iterations = 15)
+
+# b. Homogeneidad de varianzas
+plot(lm.aov, 1, pch=20, col = "blue")
+leveneTest(Peso ~ Dosis, data = Biom_8,
+           center = "median")
+
+# c. Normalidad
+plot(lm.aov, 2, pch=20, col = "blue")
+
+# Histograma de residuales
+aov_residuals <- residuals(object = lm.aov)
+hist(x= aov_residuals, main = "Histograma de residuales")
+
+# Shapiro Test
+shapiro.test(x= aov_residuals)
+
+hist(x= aov_residuals, main = "Histograma de residuales")
+
+# Conlusión: Al analizar las gráficas y test para evaluar los supuestos, se encontró que no se cumplían. Por tanto, se realizará la prueba no paramétrica de Kruskal Wallis.
+```
+
+## Análisis no paramétrico: Kruskal Wallis
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+# Hipótesis:
+# Ho:
+# H1:
+
+kruskal.test(Biom_8$Peso~Biom_8$Dosis)
+# Conclusión: Al realizar el test, se obtuvo un p<0.05. Por tanto, hay evidencia estadística para decir que al menos un grupo sometido a diferentes dosis difiere en peso de los otros grupos.
+
+plot.design(Biom_8$Peso~as.factor(Biom_8$Dosis), col=2, ylim(5,48),
+            las=1)
+
+# Prueba de comparaciones múltiples: DunnTest
+DunnTest(Biom_8$Peso~as.factor(Biom_8$Dosis)) # Todos contra todos
+
+# Conclusión: El peso con la inclusión de la dosis de 0.3 g/Kg de aceite en la dieta es > que los otros grupos. Mientras que el peso con dosis de 0.5 g/Kg y control es igual.
+
+# Comparaciones Multiples No-paramétricas
+gao(Peso~Dosis, data=Biom_8, alpha = 0.05, control = "0", silent = T) # comparado control
+```
+# Análisis de supervivencia
+```{r}
+# Cargar librerías
+library(survival)
+library(survminer)
+library(ggpubr)
+library(dplyr)
+library(tidyverse)
+```
+
+## Importar, explorar set de datos y transformar variables
+```{r}
+View(mortalidad)
+head(mortalidad)
+str(mortalidad)
+summary(mortalidad)
+
+# Convertir a factor las variables "tratamiento" y "fish_id"
+mortalidad$tratamiento<-as.factor(mortalidad$tratamiento)
+mortalidad$fish_id<-as.factor(mortalidad$fish_id)
+str(mortalidad)
+```
+
+## Planteamiento de hipótesis
+```{r cars}
+# H0 : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente
+# H1 : La sobrevivencia en trucha arcoíris con o sin tratamiento es diferente.
+```
+
+## Análisis de sobrevivencia
+```{r}
+# Creando objeto tipo sobrevivencia
+surv_obj <- Surv(mortalidad$survival_time, mortalidad$survival_status)
+class(surv_obj)
+surv_obj
+
+# Calculando la probabilidad de sobrevivencia de Kaplan-Meier y otras.
+ps <- survfit(Surv(survival_time, survival_status) ~ tratamiento,
+              data=mortalidad, na.action= na.exclude,type="kaplan-meier")
+class(ps)
+summary(ps)
+
+# Probando si existen o no diferencias entre dos o más curvas de sobrevivencia
+test_surv <- survdiff(formula=Surv(survival_time, survival_status) ~ tratamiento, data=mortalidad)
+class(test_surv)
+```
+
+## Gráfica de sobrevivencia
+```{r pressure, echo=TRUE}
+ggsurvplot(ps, data=mortalidad, conf.int = FALSE, pval = TRUE, ggtheme = theme_bw())
+```

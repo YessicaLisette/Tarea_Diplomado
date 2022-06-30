@@ -11,7 +11,7 @@ El objetivo del estudio fue evaluar el efecto de un producto comercial a base de
 
 ## Variables: 
 
-### Independiente: 
+### - Independiente: 
 Aceite de orégano 
 
 ### - Dependiente:
@@ -27,7 +27,7 @@ Peso, Talla y Mortalidad
 - *H1: Al menos un grupo de peces alimentados con diferentes dosis de aceite difieren en sus pesos*
 
 ### **Análisis de supervivencia**
-- *H0 : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente*
+- *Ho : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente*
 - *H1 : La sobrevivencia en trucha arcoíris con o sin tratamiento es diferente*
 
 ## Conclusión

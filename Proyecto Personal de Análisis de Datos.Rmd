@@ -21,8 +21,8 @@ Aceite de orégano
 ### Dependientes: 
 Peso, Talla y Mortalidad
 
-# ANÁLISIS EXPLORATORIO
-## Instalar paquetes y cargar librerías
+## ANÁLISIS EXPLORATORIO
+### Instalar paquetes y cargar librerías
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
@@ -33,7 +33,7 @@ library(tidyr)
 library(psych)
 ```
 
-## Cargar y leer archivos
+### Cargar y leer archivos
 ```{r, message=FALSE, warning=FALSE}
 biometría<-read_excel("Datos_biometría.xlsx", sheet=1)
 mortalidad <- read_excel("data_mortalidad.xls", sheet = 2)
@@ -53,9 +53,8 @@ summary(biometría)
 str(biometría)
 ```
 
-## Filtrar y explorar datos
+### Filtrar y explorar datos
 ```{r, message=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 Biom_1<-biometría%>%filter(N_Biom=="1")
 Biom_4<-biometría%>%filter(N_Biom=="4")
 Biom_8<-biometría%>%filter(N_Biom=="8")
@@ -71,13 +70,6 @@ boxplot(Biom_8$Peso~Biom_8$Dosis, col=c("aquamarine","cyan2","cadetblue"),main="
 
 # Establecer relación entre variables cuantitativas y factores 
 
-hist(Biom_4$Peso, col="#FA8072", main="Histograma de Peso_4", las=1, xlab="Peso (g)", 
-     ylab="Frecuencia")
-
-hist(Biom_8$Talla, col="#4EEE94", main="Histograma de Talla_8", las=1, xlab="Talla (cm)", 
-     ylab="Frecuencia")
-
-# Boxplot
 ggplot(Biom_8, aes(Peso))+
   geom_histogram(bins=8, color="#858585", fill="#ADFF2F")+
   labs(title="Histograma", x="Peso", 
@@ -85,10 +77,18 @@ ggplot(Biom_8, aes(Peso))+
 
 ggboxplot(Biom_8, x= "Dosis", y
           ="Talla",col= 1, ylab="Talla (cm)",
-          xlab="Dosis", notch = F, add.params = list(color = c("cadetblue"))
-          
+          xlab="Dosis", notch = F, add.params = list(color = c("cadetblue")), add="jitter")
+
+ggplot(Biom_8, aes(x=Dosis, y=Peso, fill=N_Estanque)) +
+  geom_boxplot()+
+  labs(y="Peso")
+
+ggplot(Biom_8, aes(x=Dosis, y=Talla, fill=N_Estanque)) +
+  geom_boxplot()+
+  labs(y="Talla")
+         
 # Gráficos Dispersión, interacción y correlación
-plot (Biom_1$Peso, Biom_8$Peso,col=heat.colors(10,1), pch=c(16), cex=0.8, main="Peso vs Talla", xlab="Peso_1[g]", ylab="Peso_8 [g]", ylim=c(0,1), xlim=c(5,50), las=1)
+plot (Biom_1$Peso, Biom_8$Peso,col=heat.colors(10,1), pch=c(16), cex=0.8, main="Peso(1) vs Peso(8)", xlab="Peso_1[g]", ylab="Peso_8 [g]", ylim=c(5,50), xlim=c(0,1), las=1)
 
 pairs.panels(Biom_8[,4:5], method = "pearson", hist.col = "#FFA500",density = TRUE, font=2)
 
@@ -107,7 +107,7 @@ library(DT)
 datatable(Biom_8, caption = "Peso y Talla en función de la Dosis") 
 ```
 
-# ANÁLISIS ESTATÍSTICO
+## ANÁLISIS ESTADÍSTICO
 ```{r, message=FALSE, warning=FALSE}
 # Instalar paquetes y cargar librerías
 install.packages("DescTools")
@@ -124,7 +124,7 @@ tapply(Biom_8$Peso,Biom_8$Dosis,sd)
 tapply(Biom_8$Peso,Biom_8$Dosis,length)
 
 # Gráfico
-boxplot(Biom_8$Peso~Biom_8$Dosis, names=c("0.5", "0.3", "0"), cex.main=1,
+boxplot(Biom_8$Peso~Biom_8$Dosis, names=c("0", "0.3", "0.5"), cex.main=1,
         ylab="Peso", col=c("deepskyblue1","deepskyblue3","deepskyblue4"), main="Peso segun dosis de inclusión",
         las=1, xlab="Dosis", ylimit=c(0,50))
 
@@ -181,7 +181,7 @@ DunnTest(Biom_8$Peso~as.factor(Biom_8$Dosis)) # Todos contra todos
 # Comparaciones Multiples No-paramétricas
 gao(Peso~Dosis, data=Biom_8, alpha = 0.05, control = "0", silent = T) # comparado control
 ```
-# Análisis de supervivencia
+## Análisis de supervivencia
 ```{r, message=FALSE, warning=FALSE}
 # Cargar librerías
 library(survival)
@@ -191,9 +191,8 @@ library(dplyr)
 library(tidyverse)
 ```
 
-## Importar, explorar set de datos y transformar variables
+### Importar, explorar set de datos y transformar variables
 ```{r, message=FALSE, warning=FALSE}
-View(mortalidad)
 head(mortalidad)
 str(mortalidad)
 summary(mortalidad)
@@ -204,13 +203,13 @@ mortalidad$fish_id<-as.factor(mortalidad$fish_id)
 str(mortalidad)
 ```
 
-## Planteamiento de hipótesis
+### Planteamiento de hipótesis
 ```{r, message=FALSE, warning=FALSE}
 # H0 : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente
 # H1 : La sobrevivencia en trucha arcoíris con o sin tratamiento es diferente.
 ```
 
-## Análisis de sobrevivencia
+### Análisis de sobrevivencia
 ```{r, message=FALSE, warning=FALSE}
 # Creando objeto tipo sobrevivencia
 surv_obj <- Surv(mortalidad$survival_time, mortalidad$survival_status)
@@ -228,7 +227,7 @@ test_surv <- survdiff(formula=Surv(survival_time, survival_status) ~ tratamiento
 class(test_surv)
 ```
 
-## Gráfica de sobrevivencia
+### Gráfica de sobrevivencia
 ```{r pressure, message=FALSE, warning=FALSE, echo=TRUE}
 ggsurvplot(ps, data=mortalidad, conf.int = FALSE, pval = TRUE, ggtheme = theme_bw())
 ```

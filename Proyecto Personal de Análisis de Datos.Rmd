@@ -21,7 +21,7 @@ Aceite de orégano
 ### Dependientes: 
 Peso, Talla y Mortalidad
 
-## ANÁLISIS EXPLORATORIO
+## Análisis exploratorio
 ### Instalar paquetes y cargar librerías
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -107,7 +107,7 @@ library(DT)
 datatable(Biom_8, caption = "Peso y Talla en función de la Dosis") 
 ```
 
-## ANÁLISIS ESTADÍSTICO
+## Análisis estadístico
 ```{r, message=FALSE, warning=FALSE}
 # Instalar paquetes y cargar librerías
 install.packages("DescTools")

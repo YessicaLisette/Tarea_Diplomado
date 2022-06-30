@@ -18,11 +18,18 @@ Aceite de orégano
 Peso, Talla y Mortalidad
 
 ## Métodos estadísticos
+Peso y Talla: Análisis de varianza o Kruskal Wallis
 Mortalidad: Análisis de supervivencia
 
 ## Hipótesis
+### **Análisis de varianza o Kruskall Wallis**
+"Ho: Los peces alimentados con diferentes dosis de aceite no difieren en sus pesos"
+"H1: Al menos un grupo de peces alimentados con diferentes dosis de aceite difieren en sus pesos"
+
+### **Análisis de supervivencia**
 "H0 : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente"
 "H1 : La sobrevivencia en trucha arcoíris con o sin tratamiento es diferente"
 
 ## Conclusión
-La sobreviencia en trucha arcoíris con la inclusión de aceite de orégano (T1 y T2) es diferente al grupo control
+- Hay evidencia estadística para decir que al menos un grupo de peces sometido a diferentes dosis difiere en peso de los otros grupos.
+- La sobreviencia en trucha arcoíris con la inclusión de aceite de orégano (T1 y T2) es diferente al grupo control

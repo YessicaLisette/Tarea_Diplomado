@@ -51,7 +51,6 @@ biometría$N_Biom<-as.factor(biometría$N_Biom)
 biometría$N_Estanque<-as.factor(biometría$N_Estanque)
 summary(biometría)
 str(biometría)
-
 ```
 
 ## Filtrar y explorar datos
@@ -61,7 +60,6 @@ Biom_1<-biometría%>%filter(N_Biom=="1")
 Biom_4<-biometría%>%filter(N_Biom=="4")
 Biom_8<-biometría%>%filter(N_Biom=="8")
 
-
 # Evaluar diseño balanceado mediante tablas de frecuencia
 table(biometría$Dosis, biometría$N_Estanque)
 table(biometría$Dosis, biometría$N_Biom)
@@ -69,7 +67,7 @@ table(biometría$Dosis, biometría$N_Biom)
 # Identificación de datos atípicos
 boxplot(Biom_8$Peso~Biom_8$Dosis, col=c("aquamarine","cyan2","cadetblue"),main="Comparacion de Dosis", ylim=c(0,50), xlab="Dosis", ylab="Peso [g]", names=c("0", "0.3",
 "0.5"))
-## No se observan valores atípicos (outliers)
+# No se observan valores atípicos (outliers)
 
 # Establecer relación entre variables cuantitativas y factores 
 
@@ -89,21 +87,17 @@ ggboxplot(Biom_8, x= "Dosis", y
           ="Talla",col= 1, ylab="Talla (cm)",
           xlab="Dosis", notch = F, add.params = list(color = c("cadetblue"))
           
-# Gráficas de dispersión, interacción y correlación
-plot(x = Biom_8$Peso, y = Biom_8$Talla, col = Biom_8$Dosis, 
-     main = "Peso - Talla", xlab = "Peso", ylab = "Talla")
-legend(x = "topleft", legend = c("GC", "T1", "T2"), 
-       fill = c("black", "red", "green"), title = "Peso vs Talla")
+# Gráficos Dispersión, interacción y correlación
+plot (Biom_1$Peso, Biom_8$Peso,col=heat.colors(10,1), pch=c(16), cex=0.8, main="Peso vs Talla", xlab="Peso_1[g]", ylab="Peso_8 [g]", ylim=c(0,1), xlim=c(5,50), las=1)
 
-pairs.panels(Biom_8[,4:5], method = "pearson", hist.col = "#FFA500",  density = TRUE, font=2)
+pairs.panels(Biom_8[,4:5], method = "pearson", hist.col = "#FFA500",density = TRUE, font=2)
 
-# Gráficos: Densidad y distribución acumulada empírica
+# Gráficos Densidad y distribucion acumulada empirica
 plot(density(Biom_8$Peso))
 plot(density(Biom_8$Talla))
 
 plot(ecdf(Biom_8$Talla), main="Distribución acumulada empírica", xlab="Talla (cm)")
 plot(ecdf(Biom_8$Peso), main="Distribución acumulada empírica", xlab="Peso (g)")
-
 ```
 
 ## Generando tablas

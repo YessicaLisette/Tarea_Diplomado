@@ -1,0 +1,86 @@
+---
+title: "Presentación Proyecto Final_Diplomado"
+author: "Yessica Ortega Asencios"
+date: '2022-06-30'
+output: beamer_presentation
+    theme: Malmoe
+    colortheme: seahorse
+    fonttheme: professionalfonts
+    includes:
+      in_header: mystyle.tex
+  urlcolor: blue
+subtitle: Diplomado en Análisis de datos con R para la Acuicultura.
+institute: Pontificia Universidad Católica de Valparaíso
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
+library(readxl
+```
+
+## ANTECEDENTES
+
+**1).** **Introducción**
+
+La acuicultura en Perú es una importante actividad económica. Siendo la trucha arcoíris (*Oncorhynchus mykiss*) la principal especie cultivada, y Puno el primer departamento productor. Sin embargo, la mortalidad en alevinaje es una limitante para su desarrollo y en consecuencia, el uso de antimicrobianos. En ese sentido, la presente propuesta busca introducir alternativas preventivas que disminuyan estos índices y mejoren los parámetros productivos.
+
+## HIPÓTESIS
+La inclusión de aceite de orégano en la dieta aumenta los parámetros productivos y disminuye la mortalidad en trucha arcoíris (*O. mykiss*)
+
+## DISEÑO EXPERIMENTAL
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## ANÁLISIS ESTADÍSTICO
+**1).** **Evaluación de supuestos**
+- Independencia: No cumple
+- Homocedasticidad: No cumple (p<0.05)
+- Normalidad: No cumple (p<0.05)
+
+**2).** **Prueba de Kruskal Wallis**
+Conclusión: Hay evidencia estadística para decir que al menos un grupo sometido a diferentes dosis difiere en peso de los otros grupos (p<0.05)
+
+**3).** **Prueba de Comparaciones Múltiples**
+Conclusión: Los grupos sometidos a dosis de 0.3 g/Kg y 0.5 g/Kg difieren en peso significativamente del grupo control (p<0.05).
+
+## ANÁLISIS DE SUPERVIVENCIA
+```{r, echo=FALSE}
+surv_obj <- Surv(mortalidad$survival_time, mortalidad$survival_status)
+class(surv_obj)
+surv_obj
+
+# Calculando la probabilidad de sobrevivencia de Kaplan-Meier y otras.
+ps <- survfit(Surv(survival_time, survival_status) ~ tratamiento,
+              data=mortalidad, na.action= na.exclude,type="kaplan-meier")
+class(ps)
+summary(ps)
+
+# Probando si existen o no diferencias entre dos o más curvas de sobrevivencia
+test_surv <- survdiff(formula=Surv(survival_time, survival_status) ~ tratamiento, data=mortalidad)
+class(test_surv)
+```
+
+```{r,  warning=FALSE, out.width = '75%', message=FALSE, fig.align='center', fig.cap="Curvas de Kaplan Meier T1, T2, Control."}
+
+ggsurvplot(ps, data=mortalidad, conf.int = FALSE, pval = TRUE, ggtheme = theme_bw())
+```
+
+```{r cars, echo = TRUE}
+biometría<-read_excel("Datos_biometría.xlsx", sheet=1)
+mortalidad <- read_excel("data_mortalidad.xls", sheet = 2)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+

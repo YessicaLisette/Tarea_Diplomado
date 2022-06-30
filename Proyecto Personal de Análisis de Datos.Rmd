@@ -23,7 +23,7 @@ Peso, Talla y Mortalidad
 
 # ANÁLISIS EXPLORATORIO
 ## Instalar paquetes y cargar librerías
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(ggplot2)
@@ -34,7 +34,7 @@ library(psych)
 ```
 
 ## Cargar y leer archivos
-```{r}
+```{r, message=FALSE, warning=FALSE}
 biometría<-read_excel("Datos_biometría.xlsx", sheet=1)
 mortalidad <- read_excel("data_mortalidad.xls", sheet = 2)
 
@@ -55,7 +55,7 @@ str(biometría)
 ```
 
 ## Filtrar y explorar datos
-```{r}
+```{r, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 Biom_1<-biometría%>%filter(N_Biom=="1")
 Biom_4<-biometría%>%filter(N_Biom=="4")
@@ -66,6 +66,11 @@ Biom_8<-biometría%>%filter(N_Biom=="8")
 table(biometría$Dosis, biometría$N_Estanque)
 table(biometría$Dosis, biometría$N_Biom)
 
+# Identificación de datos atípicos
+boxplot(Biom_8$Peso~Biom_8$Dosis, col=c("aquamarine","cyan2","cadetblue"),main="Comparacion de Dosis", ylim=c(0,50), xlab="Dosis", ylab="Peso [g]", names=c("0", "0.3",
+"0.5"))
+## No se observan valores atípicos (outliers)
+
 # Establecer relación entre variables cuantitativas y factores 
 
 hist(Biom_4$Peso, col="#FA8072", main="Histograma de Peso_4", las=1, xlab="Peso (g)", 
@@ -74,24 +79,16 @@ hist(Biom_4$Peso, col="#FA8072", main="Histograma de Peso_4", las=1, xlab="Peso 
 hist(Biom_8$Talla, col="#4EEE94", main="Histograma de Talla_8", las=1, xlab="Talla (cm)", 
      ylab="Frecuencia")
 
-# Barplot
-barplot(tapply(Biom_8$Peso, Biom_8$Dosis, mean), names=c("0", "0.3", "0.5"),
-space=1.5, col="cadetblue", xlab="Dosis", ylab="Peso[g]", ylim=c(0,), main = "Comparacion Promedios”, las =1)
-
 # Boxplot
-
 ggplot(Biom_8, aes(Peso))+
   geom_histogram(bins=8, color="#858585", fill="#ADFF2F")+
   labs(title="Histograma", x="Peso", 
        y="Frecuencia")
 
-
 ggboxplot(Biom_8, x= "Dosis", y
           ="Talla",col= 1, ylab="Talla (cm)",
           xlab="Dosis", notch = F, add.params = list(color = c("cadetblue"))
           
-
-
 # Gráficas de dispersión, interacción y correlación
 plot(x = Biom_8$Peso, y = Biom_8$Talla, col = Biom_8$Dosis, 
      main = "Peso - Talla", xlab = "Peso", ylab = "Talla")
@@ -109,16 +106,15 @@ plot(ecdf(Biom_8$Peso), main="Distribución acumulada empírica", xlab="Peso (g)
 
 ```
 
-
 ## Generando tablas
-```{r}
+```{r, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(DT)
-datatable(Biom_8, caption = "Peso y Talla en función de la Dosis.") 
+datatable(Biom_8, caption = "Peso y Talla en función de la Dosis") 
 ```
 
 # ANÁLISIS ESTATÍSTICO
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Instalar paquetes y cargar librerías
 install.packages("DescTools")
 install.packages("nparcomp") 
@@ -129,8 +125,9 @@ library(DescTools)
 library("nparcomp")
 
 # Análisis preliminar
-tapply(Biom_8$Talla,Biom_8$Dosis,mean)
 tapply(Biom_8$Peso,Biom_8$Dosis,mean)
+tapply(Biom_8$Peso,Biom_8$Dosis,sd)
+tapply(Biom_8$Peso,Biom_8$Dosis,length)
 
 # Gráfico
 boxplot(Biom_8$Peso~Biom_8$Dosis, names=c("0.5", "0.3", "0"), cex.main=1,
@@ -170,11 +167,11 @@ hist(x= aov_residuals, main = "Histograma de residuales")
 ```
 
 ## Análisis no paramétrico: Kruskal Wallis
-```{r}
+```{r, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # Hipótesis:
-# Ho:
-# H1:
+# Ho: Los peces alimentados con diferentes dosis de aceite no difieren en sus pesos.
+# H1: Al menos un grupo de peces alimentados con diferentes dosis de aceite difieren en sus pesos.
 
 kruskal.test(Biom_8$Peso~Biom_8$Dosis)
 # Conclusión: Al realizar el test, se obtuvo un p<0.05. Por tanto, hay evidencia estadística para decir que al menos un grupo sometido a diferentes dosis difiere en peso de los otros grupos.
@@ -191,7 +188,7 @@ DunnTest(Biom_8$Peso~as.factor(Biom_8$Dosis)) # Todos contra todos
 gao(Peso~Dosis, data=Biom_8, alpha = 0.05, control = "0", silent = T) # comparado control
 ```
 # Análisis de supervivencia
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Cargar librerías
 library(survival)
 library(survminer)
@@ -201,7 +198,7 @@ library(tidyverse)
 ```
 
 ## Importar, explorar set de datos y transformar variables
-```{r}
+```{r, message=FALSE, warning=FALSE}
 View(mortalidad)
 head(mortalidad)
 str(mortalidad)
@@ -214,13 +211,13 @@ str(mortalidad)
 ```
 
 ## Planteamiento de hipótesis
-```{r cars}
+```{r, message=FALSE, warning=FALSE}
 # H0 : La sobrevivencia en trucha arcoíris con o sin tratamiento no es diferente
 # H1 : La sobrevivencia en trucha arcoíris con o sin tratamiento es diferente.
 ```
 
 ## Análisis de sobrevivencia
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Creando objeto tipo sobrevivencia
 surv_obj <- Surv(mortalidad$survival_time, mortalidad$survival_status)
 class(surv_obj)
@@ -238,6 +235,6 @@ class(test_surv)
 ```
 
 ## Gráfica de sobrevivencia
-```{r pressure, echo=TRUE}
+```{r pressure, message=FALSE, warning=FALSE, echo=TRUE}
 ggsurvplot(ps, data=mortalidad, conf.int = FALSE, pval = TRUE, ggtheme = theme_bw())
 ```
